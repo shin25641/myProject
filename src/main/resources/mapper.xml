@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- 해당하는 경로의 명령문을 실행해준다 -->
+ 
+  <mapper namespace="com.care.mybatis.myMapper">
+  	<select id="listAll" resultType="dto"><!-- resultType : 리턴타입 -->
+  		select * from member02 order by id desc 
+  	</select>
+  	 <select id="list" resultType="com.care.member_dto.memberDTO"><!-- resultType : 리턴타입 -->
+  		select * from member02 where id=#{id}
+  	</select>
+  	 <insert id="savedata" parameterType="dto"><!-- resultType : 리턴타입 -->
+  		insert into member02 values(#{id},#{pw})
+  	</insert>
+  	 <update id="updatedata" parameterType="dto"><!-- resultType : 리턴타입 -->
+  		update member02 set name=#{pw}, where id=#{id}
+  	</update>
+   	 <delete id="delete" parameterType="String"><!-- resultType : 리턴타입 -->
+  		delete from member02 where id=#{id}
+  	</delete>
+  	 <select id="boardListAll" resultType="com.care.board_dto.boardDTO"><!-- resultType : 리턴타입 -->
+  		select * from mvc_board
+  	</select>
+  	 <insert id="saveBoarddata" parameterType="com.care.board_dto.boardDTO"><!-- resultType : 리턴타입 -->
+  		insert into mvc_board(id,name,title,content,hit,idgroup,step,indent) values(mvc_board_seq.nextval,#{name},#{title},#{content},0,mvc_board_seq.currval,0,0)
+  	</insert>
+  	 <select id="boardlist" resultType="com.care.board_dto.boardDTO"><!-- resultType : 리턴타입 -->
+  		select * from mvc_board where id=#{id}
+  	</select>
+  	 <update id="boardUpdatedata" parameterType="com.care.board_dto.boardDTO"><!-- resultType : 리턴타입 -->
+  		update mvc_board set name=#{name},title=#{title},content=#{content} where id=#{id}
+  	</update>
+  	 <update id="boardCnt" parameterType="com.care.board_dto.boardDTO"><!-- resultType : 리턴타입 -->
+  		update mvc_board set hit=#{hit}+1 where id=#{id}
+  	</update>
+   	 <delete id="boardDelete" parameterType="int"><!-- resultType : 리턴타입 -->
+  		delete from mvc_board where id=#{id}
+  	</delete>
+  	 <select id="boardlistReplyView" resultType="com.care.board_dto.boardDTO"><!-- resultType : 리턴타입 -->
+  		select * from mvc_board where id=#{id}
+  	</select>
+  	 <insert id="saveBoarddataReply" parameterType="com.care.board_dto.boardDTO"><!-- resultType : 리턴타입 -->
+  		insert into mvc_board(id,name,title,content,hit,idgroup,step,indent) values(mvc_board_seq.nextval,#{name},#{title},#{content},0,#{id},0,0)
+  	</insert>
+
+  	 <insert id="saveLogData" parameterType="com.care.log_dto.logDTO">
+  		insert into userlog(num,id,starttime,endtime,resulttime) values(time_number.nextval,#{id},#{starttime},#{endtime},0) 
+  		<selectKey keyProperty="num" resultType="Integer" order="AFTER"> 
+  		select time_number.currval FROM dual 
+  		</selectKey>
+  	</insert>
+  	 <update id="updateLogData" parameterType="com.care.log_dto.logDTO"><!-- resultType : 리턴타입 -->
+  		update userlog set endtime=#{endtime}, resulttime=#{resulttime} where num = #{num}
+  	</update>
+  	
+  	 <select id="logListAll" resultType="Ldto"><!-- resultType : 리턴타입 -->
+		select * from userlog order by starttime desc
+  	</select>
+ 
+  </mapper>
